@@ -17,13 +17,16 @@ test.only('Pop up validations', async ({ page }) => {
     await expect(page.getByRole('textbox', { name: 'Hide/Show Example' })).toBeHidden();
 
     //Event js dialog validation
-    //page.on('dialog', dialog => dialog.accept());
-    //await page.getByRole('button', { name: 'Alert' }).click();
-    const [dialog] = await Promise.all([
+    page.on('dialog', dialog => dialog.accept());
+    await page.getByRole('button', { name: 'Alert' }).click();
+    /*const [dialog] = await Promise.all([
         page.waitForEvent('dialog'),
         page.getByRole('button', { name: 'Alert' }).click()
     ]);
 
     await dialog.accept();
+    */
+    await page.pause();
+    await page.locator('#mousehover').hover();
 
 });
