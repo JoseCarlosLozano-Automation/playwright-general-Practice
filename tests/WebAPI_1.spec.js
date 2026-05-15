@@ -5,6 +5,7 @@ const loginPayload = {
     userPassword: "Echo123$"
 };
 
+let token;
 test.beforeAll( async () => {
     const apiContext = await request.newContext();
     const loginResponse = await apiContext.post("https://rahulshettyacademy.com/api/ecom/auth/login", {
@@ -14,7 +15,8 @@ test.beforeAll( async () => {
     expect(loginResponse.ok()).toBeTruthy();
 
     const loginResponseJson = await loginResponse.json();
-    const token = loginResponseJson.token;
+    token = loginResponseJson.token;
+    console.log("Token: " + token);
 });
 
 test.beforeEach( async () => {
@@ -26,34 +28,27 @@ test.afterAll( async () => {
 });
 
 
-test('Client App test', async ({ page }) => {
+test('Client API test', async ({ page }) => {
+
+    page.addInitScript(token => {
+        window.localStorage.setItem('token', token);
+    }, token);
+
+    await page.goto("https://rahulshettyacademy.com/client/");
 
     const email = "testacc1@testemail.com";
-    const pass = "Echo123$";
-    const userName = page.getByPlaceholder("email@example.com");
-    const userPass = page.getByPlaceholder("enter your passsword");
-    const signInBtn = page.getByRole('button', { name: 'Login' });
     const cartBtn = page.getByRole('button').filter({ hasText: 'Cart' }).filter({ hasNotText: 'Add' });
     const products = page.locator(".card-body");
     const cardTitles = page.locator(".card-body b");
     const checkoutBtn = page.getByRole('button', { name: 'Checkout' });
     const productName = 'ZARA COAT 3';
-    
-    await page.goto("https://rahulshettyacademy.com/client/");
 
-    await userName.fill(email);
-    await userPass.fill(pass);
-    await signInBtn.click();
-
-    await page.waitForLoadState('networkidle'); // This method waits for the API calls to be completely loaded. Useful in the example below, where we need to fetch some titles and we expect the data to be there
-    await expect(cardTitles.first()).toBeVisible(); // This method waits for a specific element to be completely loaded, only then we know that we can interact with it
-
+    await page.waitForLoadState('networkidle');
+    await expect(cardTitles.first()).toBeVisible();
     await products.filter({ hasText: productName }).getByRole("button", {name:"Add To Cart"}).click();
-
     await cartBtn.click();
 
     await expect(page.getByText("ZARA COAT 3")).toBeVisible();
-
     await checkoutBtn.click();
 
     await page.locator('div:has-text("Expiry Date") select').first().selectOption('04');
