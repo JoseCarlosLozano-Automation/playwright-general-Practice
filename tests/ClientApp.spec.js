@@ -2,7 +2,7 @@ const {test, expect} = require('@playwright/test');
 
 test('Client App test', async ({ page }) => {
 
-    const email = "joce.29.95@gmail.com";
+    const email = "testacc1@testemail.com";
     const pass = "Echo123$";
     const userName = page.getByPlaceholder("email@example.com");
     const userPass = page.getByPlaceholder("enter your passsword");

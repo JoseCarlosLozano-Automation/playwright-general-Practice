@@ -1,15 +1,10 @@
 const {test, expect} = require('@playwright/test');
 
-test.only('Pop up validations', async ({ page }) => {
+test('Pop up validations', async ({ page }) => {
 
     const url = 'https://rahulshettyacademy.com/AutomationPractice/';
 
     await page.goto(url);
-    //await page.goto('https://google.com');
-    //await page.goBack();
-    //await page.goForward();
-    //await page.goBack();
-    //await page.reload();
 
     //Visible/Hidden validation
     await expect(page.getByRole('textbox', { name: 'Hide/Show Example' })).toBeVisible();
