@@ -4,7 +4,7 @@ import {APIUtils} from '../utils/APIUtils';
 const loginPayload = {userEmail: "testacc1@testemail.com", userPassword: "Echo123$"};
 const orderPayload = {orders: [{country: "Mexico", productOrderedId: "6960eac0c941646b7a8b3e68"}]};
 
-let response;
+let response = {};
 
 test.beforeAll( async () => {
     //Login API
