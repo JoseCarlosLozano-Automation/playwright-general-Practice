@@ -25,7 +25,7 @@ test.beforeAll( async ({ browser }) => {
 });
 
 
-test('Client App test', async () => {
+test('Client App test after beforeall Sign in flow - 1', async () => {
     const page = await webContext.newPage();
     const cartBtn = page.getByRole('button').filter({ hasText: 'Cart' }).filter({ hasNotText: 'Add' });
     const products = page.locator(".card-body");
@@ -92,5 +92,15 @@ test('Client App test', async () => {
    //Final order validations
     const oderIdDetails = await page.locator("div.col-text").textContent();
     expect(cleanOrderId.includes(oderIdDetails)).toBeTruthy();
+
+});
+
+
+test('Client App test after beforeall Sign in flow - 2', async () => {
+    const page = await webContext.newPage();
+    const cardTitles = page.locator(".card-body b");
+    await page.goto("https://rahulshettyacademy.com/client/");
+
+    console.log(await cardTitles.first().textContent());
 
 });
